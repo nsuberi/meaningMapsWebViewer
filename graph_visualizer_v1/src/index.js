@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import SimpleApp from './components/simple_ex/Simple_App';
-import Neo4jApp from './components/load_from_neo4j/Neo4j_App';
+import Neo4jApp from './components/load_from_neo4j_sigma/Neo4j_Simga_App';
 import { Neo4jProvider, createDriver } from 'use-neo4j';
 import './index.css';
 
