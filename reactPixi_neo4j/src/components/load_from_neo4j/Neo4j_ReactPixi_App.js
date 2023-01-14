@@ -32,7 +32,7 @@ const NodeView = (props) => {
   console.log(props)
 
   return (
-    <Container x={props.graph.getNodeAttribute(3, 'x')} y={props.graph.getNodeAttribute(3, 'y')}>
+    <Container x={props.graph.getNodeAttribute(Number(props.node), 'x')} y={props.graph.getNodeAttribute(Number(props.node), 'y')}>
       <Rectangle x={0} y={0} width={100} height={100} fill={0x000000} />
     </Container>
   );
@@ -41,7 +41,7 @@ const NodeView = (props) => {
 function Neo4jReactPixiApp() {
   
   const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern) RETURN ptrn')  
-  let nodes = (<div></div>)
+  let nodes = [];
 
   // Default to Loading Message
   let result = (<div className="ui active dimmer">Loading...</div>)
@@ -71,8 +71,8 @@ function Neo4jReactPixiApp() {
       
       // assign layout positions as `x`, `y` node attributes
       graph.forEachNode(node => {
-        graph.setNodeAttribute(node, 'x', 200) //Math.random() * 100);
-        graph.setNodeAttribute(node, 'y', 200) //Math.random() * 100);
+        graph.setNodeAttribute(node, 'x', Math.random() * 500);
+        graph.setNodeAttribute(node, 'y', Math.random() * 500);
         graph.setNodeAttribute(node, 'size', 15);
       });
 
@@ -80,31 +80,20 @@ function Neo4jReactPixiApp() {
       // graph.forEachNode(node => {
       //   console.log(graph.getNodeAttributes(node))
       // });
-
-
-      nodes = (<NodeView graph={graph} />)
     }
   }
 
   //console.log(graph)
 
-  // let nodes;
-  // if (!loading && first ) {
-  //    nodes = <NodeView graph={graph} node={0} />
-  // } else {
-  //    nodes = <div/>
-  // }
-
-  
+  graph.forEachNode(node => {
+    console.log(node)
+    nodes.push(<NodeView graph={graph} node={node}/>)
+  })
 
   return (
     <div>
       <Stage options={{ backgroundColor: 0xeef1f5 }}>
-          {/* {graph.forEachNode(node => {
-            console.log(node);
-            <NodeView graph={graph} node={node} />;
-          })} */}
-        {nodes}
+          { nodes } 
       </Stage>
     </div>
   );
