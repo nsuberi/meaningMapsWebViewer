@@ -15,12 +15,10 @@ function App() {
   let result = (<div className="ui active dimmer">Loading...</div>)
   let graph = new Graph();
 
-  // Was there an error ointhe query?
   if ( error ) {
     result = (<div className="ui negative message">{ error.message }</div>)
   }
   else if ( !loading ) {
-    // Get the count
     if (first) {
       console.log(first)
 
@@ -43,6 +41,7 @@ function App() {
       graph.forEachNode(node => {
         graph.setNodeAttribute(node, 'x', Math.random());
         graph.setNodeAttribute(node, 'y', Math.random());
+        graph.setNodeAttribute(node, 'size', 15);
       });
 
       // Print node attribtues to console
@@ -54,23 +53,17 @@ function App() {
   }
 
 
-  const LoadGraph = () => {
+  const LoadGraph = (graph) => {
       const loadGraph = useLoadGraph();
     
       useEffect(() => {
-        // const graph = new Graph();
-        // graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
+        const graph = new Graph();
+        graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
         loadGraph(graph);
       }, [loadGraph, graph]);
     
       return null;
     };
-
-  // return (
-  //   <div className="App">
-  //     <pre>{result}</pre>
-  //   </div>
-  // );
 
   return (
     <div>
