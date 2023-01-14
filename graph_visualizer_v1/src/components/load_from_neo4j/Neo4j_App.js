@@ -39,8 +39,8 @@ function App() {
       
       // assign layout positions as `x`, `y` node attributes
       graph.forEachNode(node => {
-        graph.setNodeAttribute(node, 'x', 0);
-        graph.setNodeAttribute(node, 'y', 0);
+        graph.setNodeAttribute(node, 'x', Math.random());
+        graph.setNodeAttribute(node, 'y', Math.random());
         graph.setNodeAttribute(node, 'size', 15);
       });
 
@@ -52,10 +52,23 @@ function App() {
     }
   }
 
+  const LoadGraph = () => {
+    const loadGraph = useLoadGraph();
+  
+    useEffect(() => {
+      //const graph = new Graph();
+      //graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
+      loadGraph(graph);
+    }, [loadGraph, graph]);
+  
+    return null;
+  };
+
   return (
     <div>
       <div>{result}</div>
       <SigmaContainer style={{ height: "500px", width: "500px" }} greph={{graph}}>
+      <LoadGraph/>
       </SigmaContainer>
     </div>
   );
