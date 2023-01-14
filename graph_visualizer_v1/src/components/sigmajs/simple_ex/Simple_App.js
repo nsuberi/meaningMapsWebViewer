@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
 
-function SimpleApp() {
+function SimpleSigmaApp() {
   
   const LoadGraph = () => {
       const loadGraph = useLoadGraph();
@@ -30,4 +30,4 @@ function SimpleApp() {
 
 }
 
-export default SimpleApp;
+export default SimpleSigmaApp;

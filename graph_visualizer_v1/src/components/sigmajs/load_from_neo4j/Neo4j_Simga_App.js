@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
 
-function App() {
+function Neo4jSigmaApp() {
   
   const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern) RETURN ptrn')  
 
@@ -73,4 +73,5 @@ function App() {
 
 }
 
-export default App;
+export default Neo4jSigmaApp;
+
