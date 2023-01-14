@@ -6,9 +6,23 @@ import { Neo4jProvider, createDriver } from 'use-neo4j';
 import './index.css';
 
 const driver = createDriver('bolt', 'localhost', 7687, 'neo4j', null)
-
-
 const container = document.getElementById('root');
+
+// PIXI.Loader.shared
+//   .add('desyrel', './assets/desyrel.xml')
+//   .load(onAssetsLoaded)
+
+// function onAssetsLoaded() {
+//   render(
+//     <React.StrictMode>
+//       <Neo4jProvider driver={driver}>
+//         <SimpleReactPixiApp/>
+//         <Neo4jReactPixiApp/>
+//       </Neo4jProvider>
+//     </React.StrictMode>,
+//     container
+//   );
+// }
 
 render(
   <React.StrictMode>
