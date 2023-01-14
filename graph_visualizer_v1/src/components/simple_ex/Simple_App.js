@@ -8,14 +8,14 @@ import "@react-sigma/core/lib/react-sigma.min.css";
 
 function SimpleApp() {
   
-  const LoadGraph = (graph) => {
+  const LoadGraph = () => {
       const loadGraph = useLoadGraph();
     
       useEffect(() => {
         const graph = new Graph();
         graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
         loadGraph(graph);
-      }, [loadGraph, graph]);
+      }, [loadGraph]);
     
       return null;
     };
