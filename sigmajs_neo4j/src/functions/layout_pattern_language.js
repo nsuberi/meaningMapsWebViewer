@@ -81,7 +81,15 @@ function layout_pattern_language(graph, group_node_id_map) {
         });
 }
 
-export {layout_pattern_language}
+function safeAdd(arrays, array_id, elem) {
+    if ( array_id in arrays ) {
+      arrays[array_id].push(Number(elem))
+    } else {
+      arrays[array_id] = [Number(elem)]
+    } 
+  }
+
+export {layout_pattern_language, safeAdd}
 
 
 

@@ -3,39 +3,31 @@ import { useEffect } from "react";
 
 import './App.css';
 
-import { useReadCypher } from 'use-neo4j';
 import { Graph } from 'graphology';
+import { useReadCypher } from 'use-neo4j';
 
-import {layout_pattern_language} from '../../functions/layout_pattern_language';
+import {layout_pattern_language, safeAdd} from '../../functions/layout_pattern_language';
 
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
 
-function safeAdd(arrays, array_id, elem) {
-    if ( array_id in arrays ) {
-      arrays[array_id].push(Number(elem))
-    } else {
-      arrays[array_id] = [Number(elem)]
-    } 
-  }
 
 function Neo4jSigmaApp() {
   const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern) RETURN ptrn')  
 
-  // Default to Loading Message
-  let result = (<div className="ui active dimmer">Loading...</div>)
+  let header = (<div className="ui active dimmer">Loading...</div>)
   let graph = new Graph();
   console.log(graph)
 
   if ( error ) {
-  result = (<div className="ui negative message">{ error.message }</div>)
+    header = (<div className="ui negative message">{ error.message }</div>)
   } 
   else if ( !loading ) {
       if (first) {
           //console.log(first)
 
           const count = records.length
-          result = (<div>There are {count} nodes in the database.</div>)
+          header = (<div>There are {count} nodes in the database.</div>)
 
           let group_node_id_map = {}
 
@@ -61,10 +53,9 @@ function Neo4jSigmaApp() {
               console.log(group_node_id_map)
               layout_pattern_language(graph, group_node_id_map)
           }
-      }
-  }
-  // var graph = load_pattern_language()
-
+        }
+     }
+  
   // Print node attribtues to console
   // console.log(graph)
   // graph.forEachNode(node => {
@@ -83,7 +74,7 @@ function Neo4jSigmaApp() {
 
   return (
     <div>
-      {result}
+      {header}
       <SigmaContainer style={{ height: "500px", width: "100%" }}>
         <LoadGraph/>
       </SigmaContainer>
