@@ -6,14 +6,14 @@ import './App.css';
 import { Graph } from 'graphology';
 import { useReadCypher } from 'use-neo4j';
 
-import {layout_pattern_language, safeAdd} from '../../functions/layout_pattern_language';
+import {layout_pattern_language, cacheGroupMembership} from '../../functions/layout_pattern_language';
 
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
 
 
 function Neo4jSigmaApp() {
-  const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern) RETURN ptrn')  
+  const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[r]->() RETURN *')  
 
   let header = (<div className="ui active dimmer">Loading...</div>)
   let graph = new Graph();
@@ -24,7 +24,7 @@ function Neo4jSigmaApp() {
   } 
   else if ( !loading ) {
       if (first) {
-          //console.log(first)
+          console.log(records)
 
           const count = records.length
           header = (<div>There are {count} nodes in the database.</div>)
@@ -37,14 +37,17 @@ function Neo4jSigmaApp() {
               const node_id = pattern.properties.id
               const group_id = pattern.properties.group
 
-              graph.addNode(node_id, {
+              if (!graph.hasNode(node_id)) {
+                graph.addNode(node_id, {
                   group: group_id,
                   name: pattern.properties.name,
                   headline: pattern.properties.headline
-              })
+                })
+                
+                cacheGroupMembership(group_node_id_map, group_id, node_id)
+              } 
 
-              // Cache which nodes belong to which groups
-              safeAdd(group_node_id_map, group_id, node_id)
+
           })
   
           // Add layout and display information to the loaded data

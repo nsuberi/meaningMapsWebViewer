@@ -72,24 +72,38 @@ function layout_pattern_language(graph, group_node_id_map) {
     console.log(graph)
     console.log(group_node_id_map)
     graph.forEachNode(node_id => {
-        const group_id = graph.getNodeAttribute(node_id, 'group')
-        let [x, y] = assignLocation(group_id, node_id, group_node_id_map)
-        graph.setNodeAttribute(node_id, 'x', x);
-        graph.setNodeAttribute(node_id, 'y', y);
-        graph.setNodeAttribute(node_id, 'size', 5);
-        graph.setNodeAttribute(node_id, 'color', group_color_map[group_id]);
-        });
+            const group_id = graph.getNodeAttribute(node_id, 'group')
+            let [x, y] = assignLocation(group_id, node_id, group_node_id_map)
+            graph.setNodeAttribute(node_id, 'x', x);
+            graph.setNodeAttribute(node_id, 'y', y);
+            graph.setNodeAttribute(node_id, 'size', 5);
+            graph.setNodeAttribute(node_id, 'color', group_color_map[group_id]);
+        }
+    );
 }
 
-function safeAdd(arrays, array_id, elem) {
+// Used to maintain cache of nodes per group
+
+function sortedIndex(array, value) {
+    var low = 0,
+    high = array.length
+    while (low < high) {
+        var mid = (low+high) >>> 1;
+        if(array[mid] < value) low = mid + 1;
+        else high = mid;
+    }
+    return low;
+}
+
+function cacheGroupMembership(arrays, array_id, elem) {
     if ( array_id in arrays ) {
-      arrays[array_id].push(Number(elem))
+      arrays[array_id].splice(sortedIndex(Number(elem)),0,Number(elem))
     } else {
       arrays[array_id] = [Number(elem)]
     } 
   }
 
-export {layout_pattern_language, safeAdd}
+export {layout_pattern_language, cacheGroupMembership}
 
 
 
