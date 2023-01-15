@@ -13,10 +13,11 @@ import "@react-sigma/core/lib/react-sigma.min.css";
 
 
 function Neo4jSigmaApp() {
-  const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[r]->() RETURN *')  
+  const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[relation]->() RETURN *')  
 
   let header = (<div className="ui active dimmer">Loading...</div>)
-  let graph = new Graph();
+  // TODO: multi flag doesn't appear to be working
+  let graph = new Graph({multi:true});
   console.log(graph)
 
   if ( error ) {
@@ -29,33 +30,43 @@ function Neo4jSigmaApp() {
           const count = records.length
           header = (<div>There are {count} nodes in the database.</div>)
 
-          let group_node_id_map = {}
+          let group_pattern_id_map = {}
 
           // Initialize and populate Graphology graph with data
           records.forEach((record)=> {
               const pattern = record.get('ptrn')
-              const node_id = pattern.properties.id
+              const node_id = pattern.identity
+              const pattern_id = pattern.properties.id
               const group_id = pattern.properties.group
 
               if (!graph.hasNode(node_id)) {
                 graph.addNode(node_id, {
+                  pattern: pattern_id,
                   group: group_id,
                   name: pattern.properties.name,
                   headline: pattern.properties.headline
                 })
                 
-                cacheGroupMembership(group_node_id_map, group_id, node_id)
+                cacheGroupMembership(group_pattern_id_map, group_id, pattern_id)
               } 
-
-
           })
-  
-          // Add layout and display information to the loaded data
-          if (graph) {
-              console.log(graph)
-              console.log(group_node_id_map)
-              layout_pattern_language(graph, group_node_id_map)
-          }
+          // records.forEach((record)=> {
+          //   const edge = record.get('relation')
+          //   if (edge.type == 'contains'){
+          //     try {
+          //       graph.addEdge(edge.start, edge.end, {type: edge.type, multi:true} )
+          //     } catch (error) {
+          //       console.log(error)
+          //     }
+          //   }
+            
+          // })
+
+
+          console.log(graph)
+          console.log(group_pattern_id_map)
+          layout_pattern_language(graph, group_pattern_id_map)
+
         }
      }
   
@@ -70,6 +81,7 @@ function Neo4jSigmaApp() {
   
     useEffect(() => {
       loadGraph(graph);
+      //loadGraph(graph2);
     }, [loadGraph]);
   
     return null;
