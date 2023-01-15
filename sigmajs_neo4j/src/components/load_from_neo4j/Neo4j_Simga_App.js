@@ -25,8 +25,60 @@ function assignLocation(group_id, node_id, group_node_id_map) {
 }
 
 function safeAdd(arrays, array_id, elem) {
-  array_id in arrays ? arrays[array_id].push(Number(elem)) : arrays[array_id] = [Number(elem)]
+  if ( array_id in arrays ) {
+    arrays[array_id].push(Number(elem))
+  } else {
+    arrays[array_id] = [Number(elem)]
+  } 
 }
+
+
+const spectrumRanges = [
+  { from: [255, 0, 0], to: [255, 255, 0] },
+  { from: [255, 255, 0], to: [0, 255, 0] },
+  { from: [0, 255, 0], to: [0, 255, 255] }
+];
+
+const findColorValue = (from, to, leftRatio) => {
+  return Math.round(from + (to - from) * leftRatio);
+};
+
+const findRgbFromGroupId = (group_id) => {
+  const num_groups = 36
+  const totalRanges = spectrumRanges.length;
+  const rangeWidth = num_groups / totalRanges;
+  const includedRange = Math.floor(group_id / rangeWidth);
+  const rangeRatio = ((group_id % rangeWidth) / rangeWidth).toFixed(2);
+  const { from, to } = spectrumRanges[includedRange];
+  return {
+    r: findColorValue(from[0], to[0], rangeRatio),
+    g: findColorValue(from[1], to[1], rangeRatio),
+    b: findColorValue(from[2], to[2], rangeRatio)
+  };
+};
+
+const rgbToHex = (colors) => {
+  const toHex = (rgb) => {
+    let hex = Number(rgb).toString(16);
+    if (hex.length < 2) {
+      hex = `0${hex}`;
+    }
+    return hex;
+  };
+  const red = toHex(colors['r']);
+  const green = toHex(colors['g']);
+  const blue = toHex(colors['b']);
+  return `#${red}${green}${blue}`;
+};
+
+const group_color_map = Object.fromEntries(
+  [...Array(36).keys()].map(
+    group_id => [
+      group_id,
+      rgbToHex(findRgbFromGroupId(group_id))
+    ]
+    )
+  )
 
 function Neo4jSigmaApp() {
   
@@ -72,6 +124,7 @@ function Neo4jSigmaApp() {
         graph.setNodeAttribute(node_id, 'x', x);
         graph.setNodeAttribute(node_id, 'y', y);
         graph.setNodeAttribute(node_id, 'size', 5);
+        graph.setNodeAttribute(node_id, 'color', group_color_map[group_id]);
       });
 
     }
