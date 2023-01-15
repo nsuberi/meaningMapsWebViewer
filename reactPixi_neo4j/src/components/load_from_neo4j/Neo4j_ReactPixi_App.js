@@ -28,6 +28,8 @@ const Rectangle = PixiComponent('Rectangle', {
   },
 })
 
+
+///// Proposed here... but it doesn't render: https://medium.com/thinknum/writing-high-performance-react-pixi-code-c8c75414020b
 // const FastText = PixiComponent('FastText', {
 //   create: props => new Text(props.text),
 //   applyProps: (instance, oldProps, props) => {
