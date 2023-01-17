@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from "react";
 
 import './App.css';
 
@@ -8,10 +7,10 @@ import { useReadCypher } from 'use-neo4j';
 
 import {layout_pattern_language, cacheGroupMembership} from '../../functions/layout_pattern_language';
 
-import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
-import "@react-sigma/core/lib/react-sigma.min.css";
+import GraphLoader from '../utils/GraphLoader';
 
-function PatternLanguageOverview() {
+
+function PatternLanguageOverview(props) {
 
     const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[relation]->() RETURN *')  
 
@@ -75,6 +74,9 @@ function PatternLanguageOverview() {
     //   consale.log(graph.getNodeAttributes(node))
     // });
 
+
+    // if props.selectedId / props.selectedIdList are not null, filter for or highlight the related nodes
+
     return (
         <div>
           <GraphLoader header={header} graph={graph}/>
@@ -82,27 +84,7 @@ function PatternLanguageOverview() {
       );
 }
 
-function GraphLoader(props){
-    const LoadGraph = () => {
-        const loadGraph = useLoadGraph();
-      
-        useEffect(() => {
-          loadGraph(props.graph);
-          //loadGraph(graph2);
-        }, [loadGraph]);
-      
-        return null;
-      };
-    
-      return (
-        <div>
-          {props.header}
-          <SigmaContainer style={{ height: "500px", width: "100%" }}>
-            <LoadGraph/>
-          </SigmaContainer>
-        </div>
-      );
-}
+
 
 
 export default PatternLanguageOverview;
