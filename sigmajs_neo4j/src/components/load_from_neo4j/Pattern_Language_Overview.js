@@ -11,7 +11,6 @@ import {layout_pattern_language, cacheGroupMembership} from '../../functions/lay
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
 
-
 function PatternLanguageOverview() {
 
     const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[relation]->() RETURN *')  
@@ -73,14 +72,22 @@ function PatternLanguageOverview() {
     // Print node attribtues to console
     // console.log(graph)
     // graph.forEachNode(node => {
-    //   console.log(graph.getNodeAttributes(node))
+    //   consale.log(graph.getNodeAttributes(node))
     // });
 
+    return (
+        <div>
+          <GraphLoader header={header} graph={graph}/>
+        </div>
+      );
+}
+
+function GraphLoader(props){
     const LoadGraph = () => {
         const loadGraph = useLoadGraph();
       
         useEffect(() => {
-          loadGraph(graph);
+          loadGraph(props.graph);
           //loadGraph(graph2);
         }, [loadGraph]);
       
@@ -89,12 +96,13 @@ function PatternLanguageOverview() {
     
       return (
         <div>
-          {header}
+          {props.header}
           <SigmaContainer style={{ height: "500px", width: "100%" }}>
             <LoadGraph/>
           </SigmaContainer>
         </div>
       );
 }
+
 
 export default PatternLanguageOverview;
