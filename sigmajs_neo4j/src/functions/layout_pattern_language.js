@@ -87,8 +87,8 @@ function sortedIndex(array, value) {
     var low = 0,
     high = array.length
     while (low < high) {
-        var mid = (low+high) >>> 1;
-        if(array[mid] < value) low = mid + 1;
+        var mid = (low+high) >>> 1; // bitshift divide by 2
+        if (array[mid] < value) low = mid + 1;
         else high = mid;
     }
     return low;

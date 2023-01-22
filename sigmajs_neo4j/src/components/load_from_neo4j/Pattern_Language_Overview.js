@@ -48,7 +48,7 @@ function PatternLanguageOverview(props) {
                     
                     cacheGroupMembership(group_pattern_id_map, group_id, pattern_id)
                 } 
-            })
+            });
             // records.forEach((record)=> {
             //   const edge = record.get('relation')
             //   if (edge.type == 'contains'){
@@ -64,9 +64,8 @@ function PatternLanguageOverview(props) {
             console.log(graph)
             console.log(group_pattern_id_map)
             layout_pattern_language(graph, group_pattern_id_map)
-
-            }
         }
+    }
     
     // Print node attribtues to console
     // console.log(graph)
