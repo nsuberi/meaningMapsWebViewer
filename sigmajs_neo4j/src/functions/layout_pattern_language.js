@@ -1,5 +1,5 @@
-const y_space_between_groups = 200
-const y_space_within_groups = 200
+const y_space_between_groups = 300
+const y_space_within_groups = 50
 const group_y_anchor_map = Object.fromEntries([...Array(40).keys()].map(y => [y, y * y_space_between_groups]))
 const x_space_between_neighbors = 200
 const x_per_row = 7
@@ -87,8 +87,8 @@ function sortedIndex(array, value) {
     var low = 0,
     high = array.length
     while (low < high) {
-        var mid = (low+high) >>> 1;
-        if(array[mid] < value) low = mid + 1;
+        var mid = (low+high) >>> 1; // bitshift divide by 2
+        if (array[mid] < value) low = mid + 1;
         else high = mid;
     }
     return low;

@@ -1,4 +1,6 @@
 import React from 'react';
+import {useContext} from 'react';
+import { AppContext } from './Neo4j_Simga_App';
 
 import './App.css';
 
@@ -12,7 +14,8 @@ import GraphLoader from '../utils/GraphLoader';
 
 function PatternLanguageOverview(props) {
 
-    const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[relation]->() RETURN *')  
+    const { cypher, error, loading, first, records } = useReadCypher('MATCH (ptrn:Pattern)-[relation]->() RETURN *');
+    const {selectedNode, setSelectedNode} = useContext(AppContext);
 
     let header = (<div className="ui active dimmer">Loading...</div>)
     // TODO: multi flag doesn't appear to be working
@@ -48,7 +51,7 @@ function PatternLanguageOverview(props) {
                     
                     cacheGroupMembership(group_pattern_id_map, group_id, pattern_id)
                 } 
-            })
+            });
             // records.forEach((record)=> {
             //   const edge = record.get('relation')
             //   if (edge.type == 'contains'){
@@ -64,9 +67,8 @@ function PatternLanguageOverview(props) {
             console.log(graph)
             console.log(group_pattern_id_map)
             layout_pattern_language(graph, group_pattern_id_map)
-
-            }
         }
+    }
     
     // Print node attribtues to console
     // console.log(graph)
@@ -76,7 +78,6 @@ function PatternLanguageOverview(props) {
 
 
     // if props.selectedId / props.selectedIdList are not null, filter for or highlight the related nodes
-
     return (
         <div>
           <GraphLoader header={header} graph={graph}/>
