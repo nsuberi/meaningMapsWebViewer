@@ -1,5 +1,5 @@
-const y_space_between_groups = 200
-const y_space_within_groups = 200
+const y_space_between_groups = 300
+const y_space_within_groups = 50
 const group_y_anchor_map = Object.fromEntries([...Array(40).keys()].map(y => [y, y * y_space_between_groups]))
 const x_space_between_neighbors = 200
 const x_per_row = 7
